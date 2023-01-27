@@ -68,12 +68,23 @@ def gen_avg_total_for_generation(pd_data):
     plt.savefig('Analise Exploratoria/Avg_Total_Generation.png')
     plt.close()
 
+def gen_no_pokemon_by_type(pd_data):
+    no_pokemon_by_type_1 = pd_data.groupby('Type_1').count()[['Name']]
+    no_pokemon_by_type_2 = pd_data.groupby('Type_2').count()[['Name']]
+    no_pokemon_by_type = no_pokemon_by_type_1.add(no_pokemon_by_type_2, fill_value=0)
+    no_pokemon_by_type.rename(columns={'Count': 'No. Pokemon'}, inplace=True)
+    no_pokemon_by_type['Name'].plot(kind='bar', title='No. Pokemon by Type')
+
+    fig = plt.gcf()
+    fig.set_size_inches(18.5, 10.5)
+    plt.savefig('Analise Exploratoria/No_Pokemon_Type.png')
+    plt.close()
+
 def gen_most_common_type_combination(pd_data):
     pd_data['Type_2'].fillna('None', inplace=True)
     pd_data = pd_data[pd_data['Type_2'] != 'None']
     pd_data.groupby(['Type_1', 'Type_2'])['Name'].count().sort_values(ascending=False).head(10).plot(kind='bar', title='Most Common Type Combination')
 
-    #text in horizontal
     fig = plt.gcf()
     fig.set_size_inches(18.5, 10.5)
     plt.xticks(rotation=45)
@@ -106,4 +117,5 @@ if __name__ == '__main__':
 
     # gen_avg_total_for_generation(data_pandas)
 
-    gen_most_common_type_combination(data_pandas)
+    #gen_most_common_type_combination(data_pandas)
+    gen_no_pokemon_by_type(data_pandas)
