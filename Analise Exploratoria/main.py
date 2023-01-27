@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 
 CSV_PATH = 'Analise Exploratoria/pokemon_alopez247.csv'
 
+## Exercicio 2 - Analise individual
+
 def gen_hp_graph(pd_data):
     pd_data['HP'].plot(kind='hist', title='HP', bins=range(0, 200, 1))
     plt.savefig('Analise Exploratoria/HP.png')
@@ -15,10 +17,31 @@ def gen_attack_graph(pd_data):
     plt.close()
 
 def gen_weight_graph(pd_data):
-    #boxplot ranging from 0 to 500 kg
     pd_data['Weight_kg'].plot(kind='box', title='Weight', vert=False, xlim=(0, 200))
     plt.savefig('Analise Exploratoria/Weight.png')
     plt.close()
+
+def gen_no_pokemon_by_generation(pd_data):
+    pd_data.groupby('Generation')['Name'].count().plot(kind='bar', title='No. Pokemon by Generation')
+    plt.savefig('Analise Exploratoria/No_Pokemon_Generation.png')
+    plt.close()
+
+def gen_no_pokemon_by_first_type(pd_data):
+    pd_data.groupby('Type_1')['Name'].count().plot(kind='bar', title='No. Pokemon by First Type')
+    plt.savefig('Analise Exploratoria/No_Pokemon_First_Type.png')
+    plt.close()
+
+def gen_no_pokemon_by_second_type(pd_data):
+    pd_data.groupby('Type_2')['Name'].count().plot(kind='bar', title='No. Pokemon by Second Type')
+    plt.savefig('Analise Exploratoria/No_Pokemon_Second_Type.png')
+    plt.close()
+    pd_data['Type_2'].fillna('None', inplace=True)
+    pd_data.groupby('Type_2')['Name'].count().plot(kind='bar', title='No. Pokemon by Second Type')
+    plt.savefig('Analise Exploratoria/No_Pokemon_Second_Type_None_Included.png')
+    plt.close()
+
+
+## Exercicio 3 - Relacionando variaveis
 
 def gen_weight_speed_comparison_graph(pd_data):
     pd_data.plot(kind='scatter', x='Weight_kg', y='Speed', title='Weight x Speed')
@@ -40,17 +63,47 @@ def gen_height_total_comparison_graph(pd_data):
     plt.savefig('Analise Exploratoria/Height_Total.png')
     plt.close()
 
+def gen_avg_total_for_generation(pd_data):
+    pd_data.groupby('Generation')['Total'].mean().plot(kind='line', title='Average Total by Generation')
+    plt.savefig('Analise Exploratoria/Avg_Total_Generation.png')
+    plt.close()
+
+def gen_most_common_type_combination(pd_data):
+    pd_data['Type_2'].fillna('None', inplace=True)
+    pd_data = pd_data[pd_data['Type_2'] != 'None']
+    pd_data.groupby(['Type_1', 'Type_2'])['Name'].count().sort_values(ascending=False).head(10).plot(kind='bar', title='Most Common Type Combination')
+
+    #text in horizontal
+    fig = plt.gcf()
+    fig.set_size_inches(18.5, 10.5)
+    plt.xticks(rotation=45)
+    plt.savefig('Analise Exploratoria/Most_Common_Type_Combination.png')
+    plt.close()
+
 if __name__ == '__main__':
 
     data_pandas = pd.read_csv(CSV_PATH)
 
-    gen_hp_graph(data_pandas)
-    gen_attack_graph(data_pandas)
+##### Ex 2
 
-    gen_weight_graph(data_pandas)
 
-    gen_weight_speed_comparison_graph(data_pandas)
-    gen_weight_total_comparison_graph(data_pandas)
+    # gen_hp_graph(data_pandas)
+    # gen_attack_graph(data_pandas)
 
-    gen_height_speed_comparison_graph(data_pandas)
-    gen_height_total_comparison_graph(data_pandas)
+    # gen_weight_graph(data_pandas)
+
+    # gen_no_pokemon_by_generation(data_pandas)
+    # gen_no_pokemon_by_first_type(data_pandas)
+    # gen_no_pokemon_by_second_type(data_pandas)
+
+##### Ex 3
+
+    # gen_weight_speed_comparison_graph(data_pandas)
+    # gen_weight_total_comparison_graph(data_pandas)
+
+    # gen_height_speed_comparison_graph(data_pandas)
+    # gen_height_total_comparison_graph(data_pandas)
+
+    # gen_avg_total_for_generation(data_pandas)
+
+    gen_most_common_type_combination(data_pandas)
