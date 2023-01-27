@@ -102,7 +102,6 @@ def gen_no_pokemon_by_type(pd_data):
     no_pokemon_by_type_1 = pd_data.groupby('Type_1').count()[['Name']]
     no_pokemon_by_type_2 = pd_data.groupby('Type_2').count()[['Name']]
     no_pokemon_by_type = no_pokemon_by_type_1.add(no_pokemon_by_type_2, fill_value=0)
-    no_pokemon_by_type.rename(columns={'Count': 'No. Pokemon'}, inplace=True)
     no_pokemon_by_type['Name'].plot(kind='bar', title='No. Pokemon by Type')
 
     fig = plt.gcf()
@@ -110,6 +109,42 @@ def gen_no_pokemon_by_type(pd_data):
     plt.savefig('Analise Exploratoria/No_Pokemon_Type.png')
     plt.close()
 
+def gen_avg_total_by_type(pd_data):
+    no_pokemon_by_type_1 = pd_data.groupby('Type_1').count()[['Name']]
+    no_pokemon_by_type_2 = pd_data.groupby('Type_2').count()[['Name']]
+    no_pokemon_by_type = no_pokemon_by_type_1.add(no_pokemon_by_type_2, fill_value=0)
+
+    for type in no_pokemon_by_type.index:
+        avg = pd_data[pd_data['Type_1'] == type]['Total'].sum()
+        avg += pd_data[pd_data['Type_2'] == type]['Total'].sum()
+        avg /= no_pokemon_by_type.loc[type, 'Name']
+        no_pokemon_by_type.loc[type, 'Total'] = avg
+
+    no_pokemon_by_type['Total'].plot(kind='bar', title='Average Total by Type')
+
+    fig = plt.gcf()
+    fig.set_size_inches(18.5, 10.5)
+    plt.savefig('Analise Exploratoria/Avg_Total_Type.png')
+    plt.close()
+
+def get_avg_speed_by_type(pd_data):
+    no_pokemon_by_type_1 = pd_data.groupby('Type_1').count()[['Name']]
+    no_pokemon_by_type_2 = pd_data.groupby('Type_2').count()[['Name']]
+    no_pokemon_by_type = no_pokemon_by_type_1.add(no_pokemon_by_type_2, fill_value=0)
+
+    for type in no_pokemon_by_type.index:
+        avg = pd_data[pd_data['Type_1'] == type]['Speed'].sum()
+        avg += pd_data[pd_data['Type_2'] == type]['Speed'].sum()
+        avg /= no_pokemon_by_type.loc[type, 'Name']
+        no_pokemon_by_type.loc[type, 'Speed'] = avg
+
+    no_pokemon_by_type['Speed'].plot(kind='bar', title='Average Speed by Type')
+
+    fig = plt.gcf()
+    fig.set_size_inches(18.5, 10.5)
+    plt.savefig('Analise Exploratoria/Avg_Speed_Type.png')
+    plt.close()
+    
 def gen_most_common_type_combination(pd_data):
     pd_data['Type_2'].fillna('None', inplace=True)
     pd_data = pd_data[pd_data['Type_2'] != 'None']
@@ -128,30 +163,32 @@ if __name__ == '__main__':
 #### Ex 2
 
 
-    gen_hp_graph(data_pandas)
-    gen_attack_graph(data_pandas)
-    gen_defense_graph(data_pandas)
-    gen_sp_attack_graph(data_pandas)
-    gen_sp_defense_graph(data_pandas)
-    gen_speed_graph(data_pandas)
-    gen_total_graph(data_pandas)
+    # gen_hp_graph(data_pandas)
+    # gen_attack_graph(data_pandas)
+    # gen_defense_graph(data_pandas)
+    # gen_sp_attack_graph(data_pandas)
+    # gen_sp_defense_graph(data_pandas)
+    # gen_speed_graph(data_pandas)
+    # gen_total_graph(data_pandas)
 
-    gen_weight_graph(data_pandas)
-    gen_height_graph(data_pandas)
+    # gen_weight_graph(data_pandas)
+    # gen_height_graph(data_pandas)
 
-    gen_no_pokemon_by_generation(data_pandas)
-    gen_no_pokemon_by_first_type(data_pandas)
-    gen_no_pokemon_by_second_type(data_pandas)
+    # gen_no_pokemon_by_generation(data_pandas)
+    # gen_no_pokemon_by_first_type(data_pandas)
+    # gen_no_pokemon_by_second_type(data_pandas)
 
 #### Ex 3
 
-    gen_weight_speed_comparison_graph(data_pandas)
-    gen_weight_total_comparison_graph(data_pandas)
+    # gen_weight_speed_comparison_graph(data_pandas)
+    # gen_weight_total_comparison_graph(data_pandas)
 
-    gen_height_speed_comparison_graph(data_pandas)
-    gen_height_total_comparison_graph(data_pandas)
+    # gen_height_speed_comparison_graph(data_pandas)
+    # gen_height_total_comparison_graph(data_pandas)
 
-    gen_avg_total_for_generation(data_pandas)
+    # gen_avg_total_for_generation(data_pandas)
 
-    gen_most_common_type_combination(data_pandas)
-    gen_no_pokemon_by_type(data_pandas)
+    # gen_most_common_type_combination(data_pandas)
+    # gen_no_pokemon_by_type(data_pandas)
+    gen_avg_total_by_type(data_pandas)
+    get_avg_speed_by_type(data_pandas)
