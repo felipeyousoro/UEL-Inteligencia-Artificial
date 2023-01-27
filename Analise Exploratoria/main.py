@@ -84,6 +84,26 @@ def gen_no_pokemon_by_second_type(pd_data):
 
 ## Exercicio 3 - Relacionando variaveis
 
+def gen_attack_defense_comparison_graph(pd_data):
+    pd_data.plot(kind='scatter', x='Attack', y='Defense', title='Attack x Defense')
+    plt.savefig('Analise Exploratoria/Attack_Defense.png')
+    plt.close()
+
+def gen_attack_sp_defense_comparison_graph(pd_data):
+    pd_data.plot(kind='scatter', x='Attack', y='Sp_Def', title='Attack x Sp. Defense')
+    plt.savefig('Analise Exploratoria/Attack_Sp_Defense.png')
+    plt.close()
+
+def gen_sp_attack_defense_comparison_graph(pd_data):
+    pd_data.plot(kind='scatter', x='Sp_Atk', y='Defense', title='Sp. Attack x Defense')
+    plt.savefig('Analise Exploratoria/Sp_Attack_Defense.png')
+    plt.close()
+
+def gen_sp_attack_sp_defense_comparison_graph(pd_data):
+    pd_data.plot(kind='scatter', x='Sp_Atk', y='Sp_Def', title='Sp. Attack x Sp. Defense')
+    plt.savefig('Analise Exploratoria/Sp_Attack_Sp_Defense.png')
+    plt.close()
+
 def gen_weight_speed_comparison_graph(pd_data):
     pd_data.plot(kind='scatter', x='Weight_kg', y='Speed', title='Weight x Speed')
     plt.savefig('Analise Exploratoria/Weight_Speed.png')
@@ -113,6 +133,7 @@ def gen_no_pokemon_by_type(pd_data):
     no_pokemon_by_type_1 = pd_data.groupby('Type_1').count()[['Name']]
     no_pokemon_by_type_2 = pd_data.groupby('Type_2').count()[['Name']]
     no_pokemon_by_type = no_pokemon_by_type_1.add(no_pokemon_by_type_2, fill_value=0)
+    no_pokemon_by_type.drop('None', inplace=True)
     no_pokemon_by_type['Name'].plot(kind='bar', title='No. Pokemon by Type')
 
     fig = plt.gcf()
@@ -124,6 +145,7 @@ def gen_avg_total_by_type(pd_data):
     no_pokemon_by_type_1 = pd_data.groupby('Type_1').count()[['Name']]
     no_pokemon_by_type_2 = pd_data.groupby('Type_2').count()[['Name']]
     no_pokemon_by_type = no_pokemon_by_type_1.add(no_pokemon_by_type_2, fill_value=0)
+    no_pokemon_by_type.drop('None', inplace=True)
 
     for type in no_pokemon_by_type.index:
         avg = pd_data[pd_data['Type_1'] == type]['Total'].sum()
@@ -142,6 +164,7 @@ def get_avg_speed_by_type(pd_data):
     no_pokemon_by_type_1 = pd_data.groupby('Type_1').count()[['Name']]
     no_pokemon_by_type_2 = pd_data.groupby('Type_2').count()[['Name']]
     no_pokemon_by_type = no_pokemon_by_type_1.add(no_pokemon_by_type_2, fill_value=0)
+    no_pokemon_by_type.drop('None', inplace=True)
 
     for type in no_pokemon_by_type.index:
         avg = pd_data[pd_data['Type_1'] == type]['Speed'].sum()
@@ -190,15 +213,20 @@ if __name__ == '__main__':
 
 #### Ex 3
 
-    # gen_weight_speed_comparison_graph(data_pandas)
-    # gen_weight_total_comparison_graph(data_pandas)
+    gen_attack_defense_comparison_graph(data_pandas)
+    gen_attack_sp_defense_comparison_graph(data_pandas)
+    gen_sp_attack_defense_comparison_graph(data_pandas)
+    gen_sp_attack_sp_defense_comparison_graph(data_pandas)
 
-    # gen_height_speed_comparison_graph(data_pandas)
-    # gen_height_total_comparison_graph(data_pandas)
+    gen_weight_speed_comparison_graph(data_pandas)
+    gen_weight_total_comparison_graph(data_pandas)
 
-    # gen_avg_total_for_generation(data_pandas)
+    gen_height_speed_comparison_graph(data_pandas)
+    gen_height_total_comparison_graph(data_pandas)
 
-    # gen_most_common_type_combination(data_pandas)
-    # gen_no_pokemon_by_type(data_pandas)
-    # gen_avg_total_by_type(data_pandas)
-    # get_avg_speed_by_type(data_pandas)
+    gen_avg_total_for_generation(data_pandas)
+
+    gen_most_common_type_combination(data_pandas)
+    gen_no_pokemon_by_type(data_pandas)
+    gen_avg_total_by_type(data_pandas)
+    get_avg_speed_by_type(data_pandas)
